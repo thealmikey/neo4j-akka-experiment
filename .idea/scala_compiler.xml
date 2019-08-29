@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ScalaCompilerConfiguration">
+    <profile name="sbt 1" modules="twaarecommender" />
+    <profile name="sbt 2" modules="TwaaRecommender">
+      <option name="postfixOps" value="true" />
+      <parameters>
+        <parameter value="-target:jvm-1.8" />
+      </parameters>
+      <plugins>
+        <plugin path="C:\Users\ALMIKEY\.ivy2\cache\org.scalamacros\paradise_2.11.12\jars\paradise_2.11.12-2.1.1.jar" />
+      </plugins>
+    </profile>
+  </component>
+</project>
