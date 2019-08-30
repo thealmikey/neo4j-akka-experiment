@@ -51,3 +51,6 @@ libraryDependencies += "org.neo4j.driver" % "neo4j-java-driver" % "2.0.0-alpha03
 addCompilerPlugin(
   "org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full
 )
+
+
+libraryDependencies += "com.google.code.gson" % "gson" % "2.8.5"
