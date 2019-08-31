@@ -4,4 +4,5 @@ object ContentInteractions {
   val SHARE = "Share"
   val LIKE = "Like"
   val COMMENT = "Comment"
+  val VIEW = "View"
 }

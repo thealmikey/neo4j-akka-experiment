@@ -1,4 +1,4 @@
-enablePlugins(JDebPackaging)
+enablePlugins(JavaAppPackaging)
 
 name := "TwaaRecommender"
 

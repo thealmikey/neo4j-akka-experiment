@@ -1,7 +1,9 @@
 package com.neo4twaa.service.ContentService
 
 import java.util
+import java.util.Date
 
+import com.neo4twaa.model.Relationships.ViewedRelationship
 import com.neo4twaa.model.{Article, Category, Comment, User}
 import com.neo4twaa.service.ContentService.api.request.{RawArticleInteractionRequest, RawArticleRequest}
 import com.neo4twaa.service.MentorService.RawMentorRequest
@@ -29,7 +31,8 @@ object ArticleService {
 
       interaction.interactions match {
         case ContentInteractions.COMMENT => {
-          var comment =  new Comment()
+          var comment = new Comment()
+          comment.created_at = new Date().getTime
           article.comments.add(comment)
           user.commentedContent.add(comment)
           user.commentedArticle.add(article)
@@ -39,6 +42,12 @@ object ArticleService {
         }
         case ContentInteractions.SHARE => {
           user.sharedArticle.add(article)
+        }
+        case ContentInteractions.VIEW => {
+          var viewInteraction = new ViewedRelationship()
+          viewInteraction.user = user
+          viewInteraction.article = article
+          session.save(viewInteraction)
         }
       }
       session.save(user)
@@ -63,6 +72,7 @@ object ArticleService {
       userParams.put("user_id", rawArticle.postedBy)
       var user: User = session.queryForObject(classOf[User], "MATCH(n:User) where n.user_id=$user_id return n limit 1", userParams)
       var article = new Article()
+      article.created_at = new Date().getTime
       article.article_id = rawArticle.article_id
       var theInterests: List[Category] = rawArticle.category.map { x =>
         var one = new Category()
@@ -70,8 +80,8 @@ object ArticleService {
         one
       }
       article.title = rawArticle.title
-      article.category.addAll(theInterests.asJava)
-      article.metatags.addAll(rawArticle.category.asJava)
+//      article.category.addAll(theInterests.asJava)
+//      article.metatags.addAll(rawArticle.category.asJava)
       article.postedBy = rawArticle.postedBy
       user.postedArticle.add(article)
       session.save(user)

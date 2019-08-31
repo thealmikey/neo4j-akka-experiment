@@ -3,7 +3,7 @@ package com.neo4twaa.model
 import java.util
 
 import io.circe.generic.JsonCodec
-import org.neo4j.ogm.annotation.{EndNode, GeneratedValue, Id, Labels, NodeEntity, Relationship, RelationshipEntity, StartNode}
+import org.neo4j.ogm.annotation.{EndNode, GeneratedValue, Id, Index, Labels, NodeEntity, Relationship, RelationshipEntity, StartNode}
 
 
 //@RelationshipEntity("INTEREST")
@@ -29,16 +29,18 @@ import org.neo4j.ogm.annotation.{EndNode, GeneratedValue, Id, Labels, NodeEntity
 
 //@JsonCodec
 @NodeEntity(label = "User")
-case class User() {
+case class User() extends EventNode() {
+
   @Id
   @GeneratedValue
   var id: java.lang.Long = _
 
-  var user_id:Int = _
+  @Index(unique = true, primary = true)
+  var user_id: Int = _
 
-  var created_on:String = _
+  var created_at: java.lang.Long = _
 
-  var date_of_birth:String = _
+  var date_of_birth: String = _
 
   @Labels
   val labels = new util.ArrayList[String]()
@@ -47,8 +49,17 @@ case class User() {
   @Relationship("MENTORS")
   var mentees: java.util.ArrayList[User] = new util.ArrayList[User]()
 
+  @Relationship("SCHOOLED_AT")
+  var schools: java.util.ArrayList[School] = new util.ArrayList[School]()
+
   @Relationship("INTERESTED_IN")
   var interests: java.util.ArrayList[Category] = new util.ArrayList[Category]()
+
+  @Relationship("SKILLED_IN")
+  var skills: java.util.ArrayList[Skill] = new util.ArrayList[Skill]()
+
+  @Relationship("COURSE")
+  var courses: java.util.ArrayList[Course] = new util.ArrayList[Course]()
 
   @Relationship("RATED")
   var ratedArticle: java.util.ArrayList[Article] = new util.ArrayList[Article]()
@@ -58,7 +69,6 @@ case class User() {
 
   @Relationship("RATED")
   var ratedVideo: java.util.ArrayList[Video] = new util.ArrayList[Video]()
-
 
   @Relationship("SHARED")
   var sharedArticle: java.util.ArrayList[Article] = new util.ArrayList[Article]()
@@ -98,10 +108,6 @@ case class User() {
   @Relationship("COMMENTED_ON")
   var commentedVideo: java.util.ArrayList[Video] = new util.ArrayList[Video]()
 
-
-  @Relationship("SKILLED_AT")
-  var skills: java.util.ArrayList[Category] = new util.ArrayList[Category]()
-
   @Relationship("TWAAD")
   var twaadArticle: java.util.ArrayList[Post] = new util.ArrayList[Post]()
 
@@ -138,6 +144,16 @@ case class User() {
 
   @Relationship("CREATED")
   var commentedContent: java.util.ArrayList[Comment] = new util.ArrayList[Comment]()
+
+  @Relationship("AVAILABLE_ON")
+  var availability: java.util.ArrayList[Availability] = new util.ArrayList[Availability]()
+
+  @Relationship("COUNTRY")
+  var country: Country = _
+
+  @Relationship("STATE")
+  var state: State = _
+
 
   var goals: String = _
 }

@@ -19,4 +19,6 @@ class Post {
 
   @Relationship(`type`="COMMENT",direction="INCOMING")
   var comments: java.util.ArrayList[Comment] = new util.ArrayList[Comment]()
+
+  var created_at:java.lang.Long = _
 }

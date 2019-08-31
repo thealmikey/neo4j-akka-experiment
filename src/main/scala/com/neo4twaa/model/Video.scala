@@ -12,6 +12,8 @@ class Video() {
 
   @Labels val labels = new util.ArrayList[String]()
 
+  var created_at:java.lang.Long = _
+
   @Relationship(`type` ="COMMENT",direction="INCOMING")
   var comments: java.util.ArrayList[Comment] = new util.ArrayList[Comment]()
 }

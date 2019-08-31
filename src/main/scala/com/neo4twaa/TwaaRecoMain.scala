@@ -19,6 +19,7 @@ import akka.http.scaladsl.model.{ContentTypes, DateTime, HttpEntity, HttpRespons
 import com.google.gson.Gson
 import com.neo4twaa.service.ContentService.ArticleService
 import com.neo4twaa.service.ContentService.api.request.{RawArticleInteractionRequest, RawArticleRequest}
+import com.neo4twaa.service.MentorService.api.request.CompleteRawMentorRequest
 import com.neo4twaa.service.MentorService.{MentorMenteeService, RawMentorRequest, TheUser}
 import io.circe.{Decoder, Encoder}
 import io.circe.generic.auto._
@@ -38,7 +39,7 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
   implicit val actorMaterializer: ActorMaterializer = ActorMaterializer()
 
   var configuration = new Configuration.Builder()
-    .uri("http://neo4j:root@localhost:7474")
+    .uri("http://neo4j:twaaroot@localhost:7474")
     .autoIndex("update")
     .build();
 
@@ -51,6 +52,12 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
         entity(as[RawMentorRequest]) { person =>
           MentorMenteeService.addMentor(person)
           complete(s"Person name is: ${person.profile.name} ")
+        }
+      } ~ put {
+        entity(as[CompleteRawMentorRequest]) { person =>
+          MentorMenteeService.addFullMentor(person)
+
+          complete(s"Person name is")
         }
       } ~ get {
         //        var session = sessionFactory.openSession()
@@ -90,15 +97,15 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
         complete(s"Person name is: ${person.profile.name} ")
       }
     }
-  } ~ pathPrefix("articleapi"){
-    entity(as[RawArticleRequest]){article=>
+  } ~ pathPrefix("articleapi") {
+    entity(as[RawArticleRequest]) { article =>
       ArticleService.addArticle(article)
       complete("received an articel")
     }
-  } ~ pathPrefix("articlePostInteraction"){
-    pathEnd{
-      post{
-        entity(as[RawArticleInteractionRequest]){interaction=>
+  } ~ pathPrefix("articlePostInteraction") {
+    pathEnd {
+      post {
+        entity(as[RawArticleInteractionRequest]) { interaction =>
           ArticleService.addArticleInteraction(interaction)
           complete("Interacted")
         }

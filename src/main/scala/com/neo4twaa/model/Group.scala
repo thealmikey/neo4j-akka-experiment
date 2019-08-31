@@ -5,7 +5,7 @@ import java.util
 import org.neo4j.ogm.annotation.{GeneratedValue, Id, Labels, NodeEntity, Relationship}
 
 @NodeEntity("Group")
-class Group() {
+class Group() extends EventNode {
   @Id
   @GeneratedValue
   var id: java.lang.Long = _
@@ -16,4 +16,6 @@ class Group() {
 
   @Relationship("CATEGORY")
   var category: java.util.ArrayList[Category] = new util.ArrayList[Category]()
+
+  var created_at:java.lang.Long = _
 }
