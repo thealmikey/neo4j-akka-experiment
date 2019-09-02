@@ -19,8 +19,9 @@ import akka.http.scaladsl.model.{ContentTypes, DateTime, HttpEntity, HttpRespons
 import com.google.gson.Gson
 import com.neo4twaa.service.ContentService.ArticleService
 import com.neo4twaa.service.ContentService.api.request.{RawArticleInteractionRequest, RawArticleRequest}
-import com.neo4twaa.service.MentorService.api.request.CompleteRawMentorRequest
+import com.neo4twaa.service.MentorService.api.request.{CompleteRawMentorRequest, RawMentorInteraction}
 import com.neo4twaa.service.MentorService.{MentorMenteeService, RawMentorRequest, TheUser}
+import com.neo4twaa.service.util.UserTypes
 import io.circe.{Decoder, Encoder}
 import io.circe.generic.auto._
 import io.circe.syntax._
@@ -46,16 +47,16 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
 
   val (host, port) = ("0.0.0.0", 9091)
 
-  var publicRoutes = pathPrefix("mentorapi") {
+  var publicRoutes = pathPrefix("userapi") {
     pathEnd {
       post {
         entity(as[RawMentorRequest]) { person =>
-          MentorMenteeService.addMentor(person)
+          MentorMenteeService.addUser(person, person.user_type)
           complete(s"Person name is: ${person.profile.name} ")
         }
       } ~ put {
         entity(as[CompleteRawMentorRequest]) { person =>
-          MentorMenteeService.addFullMentor(person)
+          MentorMenteeService.addFullUser(person, "mentor")
 
           complete(s"Person name is")
         }
@@ -79,11 +80,14 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
       entity(as[RawMentorRequest]) { person =>
 
 
-        var mentee = new User()
-        mentee.labels.add("Mentee")
-        mentee.name = person.profile.name
-        mentee.date_of_birth = person.profile.Date_of_birth
-        mentee.user_id = person.user_id
+        //        var mentee = new User()
+        //        mentee.labels.add("Mentee")
+        //        mentee.name = person.profile.name
+        //        mentee.date_of_birth = person.profile.Date_of_birth
+        //        mentee.user_id = person.user_id
+
+        MentorMenteeService.addUser(person, UserTypes.MENTOR)
+        complete(s"Person name is: ${person.profile.name} ")
         //          var mentee1 = new User()
         //          mentor1.name = "Mentor One"
         //          mentor1.labels.add("Mentor")
@@ -96,6 +100,12 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
         //          sessionFactory.openSession().save(mentor1, -1)
         complete(s"Person name is: ${person.profile.name} ")
       }
+    } ~ put {
+      entity(as[CompleteRawMentorRequest]) { person =>
+        MentorMenteeService.addFullUser(person, UserTypes.MENTEE)
+
+        complete(s"Person name is")
+      }
     }
   } ~ pathPrefix("articleapi") {
     entity(as[RawArticleRequest]) { article =>
@@ -107,6 +117,15 @@ object TwaaRecoMain extends App with FailFastCirceSupport {
       post {
         entity(as[RawArticleInteractionRequest]) { interaction =>
           ArticleService.addArticleInteraction(interaction)
+          complete("Interacted")
+        }
+      }
+    }
+  } ~ pathPrefix("mentorInteraction") {
+    pathEnd {
+      post {
+        entity(as[RawMentorInteraction]) { interaction =>
+          MentorMenteeService.addMentorInteraction(interaction)
           complete("Interacted")
         }
       }

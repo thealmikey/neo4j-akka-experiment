@@ -1,9 +1,17 @@
 package com.neo4twaa.model
 
-import org.neo4j.ogm.annotation.{Index, NodeEntity}
+import java.util
+
+import org.neo4j.ogm.annotation.{GeneratedValue, Id, Index, Labels, NodeEntity}
 
 @NodeEntity("Course")
 class Course() {
+  @Id
+  @GeneratedValue
+  var id: java.lang.Long = _
+
+  @Labels val labels = new util.ArrayList[String]()
+
   @Index(unique = true, primary = true)
   var name: String = _
 }

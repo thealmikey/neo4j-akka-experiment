@@ -58,8 +58,14 @@ case class User() extends EventNode() {
   @Relationship("SKILLED_IN")
   var skills: java.util.ArrayList[Skill] = new util.ArrayList[Skill]()
 
+  @Relationship("SERVICES")
+  var services: java.util.ArrayList[Skill] = new util.ArrayList[Skill]()
+
   @Relationship("COURSE")
   var courses: java.util.ArrayList[Course] = new util.ArrayList[Course]()
+
+  @Relationship("CAUSE_OF_INTEREST")
+  var causesOfInterest: java.util.ArrayList[Cause] = new util.ArrayList[Cause]()
 
   @Relationship("RATED")
   var ratedArticle: java.util.ArrayList[Article] = new util.ArrayList[Article]()
@@ -69,6 +75,9 @@ case class User() extends EventNode() {
 
   @Relationship("RATED")
   var ratedVideo: java.util.ArrayList[Video] = new util.ArrayList[Video]()
+
+  @Relationship(`type` = "RATED", direction = Relationship.OUTGOING)
+  var ratedUsers:util.HashSet[MentorRating] = new util.HashSet[MentorRating]
 
   @Relationship("SHARED")
   var sharedArticle: java.util.ArrayList[Article] = new util.ArrayList[Article]()
@@ -129,6 +138,8 @@ case class User() extends EventNode() {
   @Relationship("VIEWED")
   var viewedAdvert: java.util.ArrayList[Advert] = new util.ArrayList[Advert]()
 
+  @Relationship("VIEWED")
+  var viewedUser: java.util.ArrayList[User] = new util.ArrayList[User]()
 
   @Relationship("CREATED")
   var createdGroups: java.util.ArrayList[Group] = new util.ArrayList[Group]()
@@ -148,14 +159,27 @@ case class User() extends EventNode() {
   @Relationship("AVAILABLE_ON")
   var availability: java.util.ArrayList[Availability] = new util.ArrayList[Availability]()
 
+  @Relationship("CONNECTED")
+  var connectedUsers: java.util.ArrayList[User] = new util.ArrayList[User]()
+
+  @Relationship("CONNECTION_METHOD")
+  var connectionMethods: java.util.ArrayList[ConnectionMethod] = new util.ArrayList[ConnectionMethod]()
+
   @Relationship("COUNTRY")
   var country: Country = _
 
   @Relationship("STATE")
   var state: State = _
 
+  @Relationship("PROFESSION")
+  var profession: util.ArrayList[Profession] =  new util.ArrayList[Profession]()
+
+  @Relationship("INDUSTRY")
+  var industry: util.ArrayList[Industry] = new util.ArrayList[Industry]()
 
   var goals: String = _
+
+  var years_of_experience:java.lang.Double = _
 }
 
 //@NodeEntity(label = "Mentee")

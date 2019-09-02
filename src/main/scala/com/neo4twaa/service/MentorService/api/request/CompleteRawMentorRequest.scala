@@ -1,11 +1,11 @@
 package com.neo4twaa.service.MentorService.api.request
 
 case class Profile(
-                    Date_of_birth: String,
-                    Industry: String,
-                    Profession: String,
-                    Country: String,
-                    State: String
+                    Date_of_birth: Option[String],
+                    Industry: Option[String],
+                    Profession: Option[String],
+                    Country: Option[String],
+                    State:Option[String]
                   )
 case class Education_background(
                                  id: Double,
@@ -15,13 +15,13 @@ case class Education_background(
                                )
 case class CompleteRawMentorRequest(
                            user_id: Int,
-                           profile: Profile,
-                           connection_methods: List[String],
-                           availability: List[String],
-                           goals: String,
-                           skills: String,
-                           courses_of_interest: List[String],
-                           services: String,
-                           education_background: Education_background,
-                           years_of_experience: Double
+                           profile: Option[Profile],
+                           connection_methods: Option[List[String]],
+                           availability: Option[List[String]],
+                           goals: Option[String],
+                           skills: Option[List[String]],
+                           causes_of_interest: Option[List[String]],
+                           services: Option[List[String]],
+                           education_background: Option[List[Education_background]],
+                           years_of_experience: Option[Double]
                          )
